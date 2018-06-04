@@ -54,6 +54,7 @@ K = 0
 xc = 0
 k = 10
 R = 0.001
+#dt = 0.0000001
 dt = 0.000001
 kb =  0.001987191683
 temp = 298
@@ -83,7 +84,13 @@ while (t<T+dt):
 #            // V(r)=K/2 ({x}-{xc})^2 -> -dV/dx=-K(x-xc)
         randomd, deviateAvailable = randn(0,1,deviateAvailable)
         v[i] = g * randomd - ( k*(r2-1)*x[i] + K*(x[i]-xc) + k_*(x[i]-xa) ) / damping
+#        print "Vi, G, Rand, k, r2, xi"
+#        print v[i], g, randomd, k, r2, x[i]
+#        quit()
         x[i] += dt * v
+        if(abs(x[i])>2.16):
+             t = T+dt
+             continue
         if (R>0):# and (t/dt)%(R/dt)==0):
 #            if (i==0):
 #                print(t)
