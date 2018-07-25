@@ -5,12 +5,17 @@
 #the bins will be 40 * 0.1 = 4 total, spanning from -2 to +2.
 
 #output data to output.txt
-open FO,">Output24.txt" or die;
+$divisor = shift;
+$fo = ">Output24_$divisor.txt";
+open FO,"$fo" or die;
 $max = 0;
 $min = 0;
+$finishLine = 1000001/$divisor;#Total Lines : 1000001
+$lineCount = 0;
 foreach (@ARGV){#pass in input files as argument names
 	print $_;
 	open FH, $_ or die;
+        $lineCount = 0;
         print "\n";
         select FO;
 	print "\n";#new line for each run, should be n+1 lines
@@ -20,7 +25,8 @@ foreach (@ARGV){#pass in input files as argument names
 	@line = split;
 	if($line[0] eq '#'){}
 	else{#grab the second value, bin it, then print it.
-		
+        $lineCount++;
+	if($lineCount<$finishLine){	
         
         
         
@@ -36,6 +42,8 @@ foreach (@ARGV){#pass in input files as argument names
         
 		print "$bin, ";#csv of bins
 	}
+        
+}
 
 }
 	close FH;
