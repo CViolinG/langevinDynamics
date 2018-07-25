@@ -40,7 +40,8 @@ for line in file.xreadlines():
 
 print max
 #print N
-f= open(sys.argv[3], "w+")#"N_%s.txt"%deltaT,"w+")
+print sys.argv[3]
+f= open("N_%s_%s.mat"%(sys.argv[1],sys.argv[3]), "w+")#"N_%s.txt"%deltaT,"w+")
 for i in range(N.shape[0]):
     for j in range(N.shape[1]):
         f.write("%d" % N[i,j])
