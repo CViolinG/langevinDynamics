@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import numpy as np
-
+import sys
+deltaT = int(sys.argv[1])
 #while(<>){
 #    @split = split /,/;
 #        foreach $value (@split){
@@ -13,7 +14,7 @@ import numpy as np
 #                           }
 #
 
-file = open("Output24.txt")
+file = open(sys.argv[2])#"../Timesteps/data/Output24_1e-06.txt")#Output24.txt")
 lineNumber = 0
 max = 0
 for line in file.xreadlines():
@@ -22,13 +23,16 @@ for line in file.xreadlines():
     if(lineNumber==1):
         n=24
         N = np.zeros((n,n))
-    for i in range(len(arr)):
+#    for i in range(len(arr)):
+    i=0
+    while (i<len(arr)-1):
+        i+=deltaT
         if (i==0):
             print "Line: ", lineNumber
-        elif(i==len(arr)-1):
-            print "Line End"
+        elif(i>=len(arr)-1):#1):
+            print "Line End", lineNumber
         else:
-            k, j = int(arr[i]), int(arr[i-1])
+            k, j = int(arr[i]), int(arr[i-deltaT])#1])
 #            print k, j
             N[k,j] +=1
             if(int(arr[i])>max):
@@ -36,7 +40,7 @@ for line in file.xreadlines():
 
 print max
 #print N
-f= open("N.txt","w+")
+f= open(sys.argv[3], "w+")#"N_%s.txt"%deltaT,"w+")
 for i in range(N.shape[0]):
     for j in range(N.shape[1]):
         f.write("%d" % N[i,j])

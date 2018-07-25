@@ -43,5 +43,5 @@ foreach (@ARGV){#pass in input files as argument names
 }
 
 
-print "$max\n";
-print "$min\n";
+#print "$max\n";
+#print "$min\n";

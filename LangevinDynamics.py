@@ -56,17 +56,19 @@ k = 10
 R = 0.001
 #dt = 0.0000001
 dt = 0.000001
+#dt = float(sys.argv[2])
 kb =  0.001987191683
 temp = 298
 damping = 1
 beta = 1 / kb / temp
 g = math.sqrt(2/(beta*dt*damping))
 dimension = 1
-T = 1
+#T = 1
+T = float(sys.argv[2])
 t=0
 x = np.zeros(dimension)
 v = np.zeros(dimension)
-xa = sys.argv[1]
+xa = float(sys.argv[1])
 
 x[0] = float(xa)
 while (t<T+dt):
