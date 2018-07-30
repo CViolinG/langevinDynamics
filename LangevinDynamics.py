@@ -52,10 +52,9 @@ def randn(mu, sigma, DA):
 k_ = 0
 K = 0
 xc = 0
-k = 1
+k = 10 
 R = 0.001
-#dt = 0.0000001
-dt = 0.0000001
+dt = 0.000001
 #dt = float(sys.argv[2])
 kb =  0.001987191683
 temp = 298

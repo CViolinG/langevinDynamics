@@ -21,7 +21,7 @@ for line in file.xreadlines():
     lineNumber +=1
     arr = line.split(", ")
     if(lineNumber==1):
-        n=24
+        n=23
         N = np.zeros((n,n))
 #    for i in range(len(arr)):
     i=0
@@ -32,7 +32,10 @@ for line in file.xreadlines():
         elif(i>=len(arr)-1):#1):
             print "Line End", lineNumber
         else:
-            k, j = int(arr[i]), int(arr[i-deltaT])#1])
+#                print arr[i], arr[i+1]
+            if(arr[i] == 'NaN'):
+                arr[i] = arr[i-deltaT] 
+            k, j = int(arr[i])-1, int(arr[i-deltaT])-1#1])
 #            print k, j
             N[k,j] +=1
             if(int(arr[i])>max):
