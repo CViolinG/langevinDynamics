@@ -11,8 +11,12 @@ D=1.0
 delta = 1/12.0
 xRange = 4
 
+def getLambda2(Matrix):
+  return np.sort(np.linalg.eig(Matrix))[1]
+
 def potential(x):
-    return k/4 * (x**2 - 1)**2
+  return k/4.0 * (x**2 - 1)**2
+
 
 def inner(x):
   return np.exp(-beta * potential(x))
@@ -39,7 +43,7 @@ def findBot(x, delta, xRange):
   for i in range(int(bins)):
     start += 2 * delta
     if(start>x):
-      return start - 2 * delta
+      return start - delta
 
 def findTop(x, delta, xRange):
   bins = xRange / (2 * delta)
@@ -47,7 +51,7 @@ def findTop(x, delta, xRange):
   for i in range(int(bins)):
     start += 2 * delta
     if(start>x):
-      return start
+      return start + delta
 
 
 def partition(x, bot, top):
@@ -73,23 +77,20 @@ def outerInt(D, botI, topI, botO, topO):
 
 
 def bigIntegral(x1,x2, delta, xRange, D):
-  bot1 = float(findBot(x1, delta, xRange))
-  bot2 = float(findBot(x2, delta, xRange))
-  top1 = float(findTop(x1, delta, xRange))
-  top2 = float(findTop(x2, delta, xRange))
-
-#  numerator = dblquad(lambda x1, x2: part * MFPT(x1, x2,D),bot1,top1, lambda x2: bot2, lambda x2: x1)
-#  denominator = dblquad(lambda x2, x1: part * MFPT(x2, x1,D), bot2, top2, lambda x1: bot1, lambda x1: x2)
+  bot1 = findBot(x1, delta, xRange)
+  bot2 = findBot(x2, delta, xRange)
+  top1 = findTop(x1, delta, xRange)
+  top2 = findTop(x2, delta, xRange)
   numerator = outerInt(D, bot1, top1, bot2, top2)
   denominator = outerInt(D, bot2, top2, bot1, top1)
   print numerator, denominator
+  print potential(x2) - potential(x1)
   return np.exp(-beta * numerator[0]) / np.exp(-beta * denominator[0])
 
 
 print "Big Integral from -1 to 0", bigIntegral(-1.0, 0.0, delta, xRange, D)
 
-print "Big Integral from -1 to 1", bigIntegral(-1.0, 1.0, delta, xRange, D)
-
+print "Big Integral from -1.5 to -1", bigIntegral(-1.5, -1.0, delta, xRange, D)
 
 #>>> from scipy.integrate import dblquad
 #>>> area = dblquad(lambda x, y: x*y, 0, 0.5, lambda x: 0, lambda x: 1-2*x)
