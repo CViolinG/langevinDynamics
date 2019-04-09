@@ -95,7 +95,7 @@ while (t<T+dt):
         if (R>0):# and (t/dt)%(R/dt)==0):
 #            if (i==0):
 #                print(t)
-            print t, " ", x[i]
+            print(t, " ", x[i])
 #            if (i==dimension-1):
 #                print( "\n")
     t += dt

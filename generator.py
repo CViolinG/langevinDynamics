@@ -20,23 +20,41 @@ for i in range(a.shape[0]):
 startingPoints = np.zeros(24)
 for i in range(a.shape[0] - 1):
    startingPoints[i] = (a[i] + a[i+1])/2.0
-print startingPoints
+print(startingPoints)
 threadsToUse = 24
 totalRuns = 24
-def startRun((j, i)):
-   value = ["python", "./LangevinDynamics.py", str(j)]#, str(i)]
+
+def startRun(i, j):
+   value = ["python3", "./LangevinDynamics.py", str(j)]#, str(i)]
+   output =  "copy_{}/toy.{}".format(i,j)
+   print("Printing to {}".format(output))
+   os.system("python3 LangevinDynamics.py {} > {} &".format(j, output))
+   return 1
+
+for i in range(totalRuns):
+    os.system("mkdir copy_{}".format(i))
+    for j in startingPoints:
+        print(i, j)
+        startRun(i, j)
+#        value = ["python3", "./LangevinDynamics.py", str(j)]
+#        output = "copy_{}/toy_{}".format(i,j)
+#        f = open(output, "w")
+#        ret = subprocess.call(value, stdout=f)
+
+    
+quit()
+
+def startRun(i, j):
+   value = ["python3", "./LangevinDynamics.py", str(j)]#, str(i)]
    output =  "copy_%s/toy.%s"%(i,j)
-   print "Printing to %s"%output
+   print("Printing to {}".format(output))
    f = open(output, "w+")
-#   value = ["ls", "-l"]
-#   print(i,j, "Print")
-   ret = 0
    ret = subprocess.call(value, stdout=f)
    return 1
 
 for f in range(deltaTs.shape[0]):
    os.system("mkdir copy_%s"%deltaTs[f])
-   print deltaTs[f]
+   print(deltaTs[f])
    runs = np.zeros(totalRuns)
    for i in range(a.shape[0]-1):
       j=startingPoints[i]
@@ -46,13 +64,14 @@ for f in range(deltaTs.shape[0]):
    k=0
    while(k<totalRuns):
       tuples = [(' ', ' ')] * threadsToUse
+      print("k: {}".format(k))
       k+=threadsToUse
       for l in range(threadsToUse):
-          tuples[l] = (runs[k-threadsToUse+l], deltaTs[f])
+      #    tuples[l] = (runs[k-threadsToUse+l], deltaTs[f])
+        startRun(deltaTs[f], runs[k-threadsToUse+l])
 #      print(p.map(startRun, runs[k-threadsToUse:k], deltaTs[f]))
       
-      print(p.map(startRun, tuples[:]))
 #startRun(runs[0], deltaTs[5])
 
-os.system("perl binIt.pl 1 copy*/*")
-os.system("python makeNMatrix.py 1 Output40_1.txt t")
+#os.system("perl binIt.pl 1 copy*/*")
+#os.system("python makeNMatrix.py 1 Output40_1.txt t")
